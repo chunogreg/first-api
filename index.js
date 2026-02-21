@@ -32,6 +32,24 @@ app.use((req, res) => {
   res.status(404).json({ error: "unknown endpoint" });
 });
 
+const unknownEndpiont = (req, res) => {
+  res.status(404).json({ error: "unknown endpoint" });
+};
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err.message);
+  if (err.name === "CastError") {
+    return res.status(400).json({ error: "Invalid Id format" });
+  }
+  if (err.name === "ValidationError") {
+    return res.status(400).json({ error: err.message });
+  }
+  res.status(500).json({ error: "something went wrong" });
+};
+
+app.use(unknownEndpiont);
+app.use(errorHandler);
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -2,52 +2,72 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 
-router.get("/", async (req, res) => {
-  const tasks = await Task.find({});
-  res.json(tasks);
-});
-
-router.get("/:id", async (req, res) => {
-  const task = await Task.findById(req.params.id);
-  if (task) {
-    res.json(task);
-  } else {
-    res.status(404).json({ error: "task not found" });
+router.get("/", async (req, res, next) => {
+  try {
+    const tasks = await Task.find({});
+    res.json(tasks);
+  } catch (error) {
+    next(error);
   }
 });
 
-router.put("/:id", async (req, res) => {
-  const updatedTask = await Task.findByIdAndUpdate(
-    req.params.id,
-    { title: req.body.title, done: req.body.done },
-    { returnDocument: "after" },
-  );
-  if (updatedTask) {
-    res.json(updatedTask);
-  } else {
-    res.status(404).json({ error: "task not found" });
+router.get("/:id", async (req, res, next) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (task) {
+      res.json(task);
+    } else {
+      res.status(404).json({ error: "task not found" });
+    }
+  } catch (error) {
+    next(error);
   }
 });
 
-router.delete("/:id", async (req, res) => {
-  const result = await Task.findByIdAndDelete(req.params.id);
-  if (result) {
-    res.status(200).json({
-      message: "Task deleted successfully",
+router.put("/:id", async (req, res, next) => {
+  try {
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title: req.body.title, done: req.body.done },
+      { returnDocument: "after" },
+    );
+    if (updatedTask) {
+      res.json(updatedTask);
+    } else {
+      res.status(404).json({ error: "task not found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.delete("/:id", async (req, res, next) => {
+  try {
+    const result = await Task.findByIdAndDelete(req.params.id);
+    if (result) {
+      res.status(200).json({
+        message: "Task deleted successfully",
+      });
+    } else {
+      res.status(404).json({ error: "data not found" });
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/", async (req, res, next) => {
+  try {
+    const task = new Task({
+      title: req.body.title,
+      done: false,
     });
-  } else {
-    res.status(404).json({ error: "data not found" });
+
+    const savedTask = await task.save();
+    res.status(201).json(savedTask);
+  } catch (error) {
+    next(error);
   }
-});
-
-router.post("/", async (req, res) => {
-  const task = new Task({
-    title: req.body.title,
-    done: false,
-  });
-
-  const savedTask = await task.save();
-  res.json(savedTask);
 });
 
 module.exports = router;

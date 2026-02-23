@@ -1,0 +1,76 @@
+taskSchema.set("toJSON", document:(returnedObject)=>{
+	returnedObject = returnedObject._id.toString();
+	delete returnedObject._id
+	delete returnedObject.__v
+   }
+
+
+
+
+
+
+
+
+import { useState, useEffect } from "react";
+import Filter from "./Filter";
+import Persons from "./Persons";
+import PersonForm from "./PersonForm";
+import axios from "axios";
+
+const App = () => {
+  const [persons, setPersons] = useState([]);
+  const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
+  const [textInput, setTextInput] = useState("");
+
+  const handleNameChange = (e) => {
+    setNewName(e.target.value);
+  };
+
+  const handleNumberChange = (e) => {
+    setNewNumber(e.target.value);
+  };
+
+  const handleSearch = (e) => {
+    setTextInput(e.target.value);
+  };
+
+  useEffect(() => {
+    console.log("fetching . . .");
+    axios.get("http://localhost:3001/persons").then((res) => {
+      console.log("promise fullfilled");
+
+      setPersons(res.data);
+      console.log(res.data);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      filter shown with
+      <Filter
+        persons={persons}
+        textInput={textInput}
+        setTextInput={setTextInput}
+        handleSearch={handleSearch}
+      />
+      <PersonForm
+        newName={newName}
+        newNumber={newNumber}
+        persons={persons}
+        setPersons={setPersons}
+        setNewName={setNewName}
+        setNewNumber={setNewNumber}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+      />
+      <h2>Numbers</h2>
+      <Persons persons={persons} textInput={textInput} />
+      <div>debug: {newName}</div>
+    </div>
+  );
+};
+
+export default App;
+

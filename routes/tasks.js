@@ -4,7 +4,12 @@ const Task = require("../models/task");
 
 router.get("/", async (req, res, next) => {
   try {
-    const tasks = await Task.find({});
+    const filter = {};
+
+    if (req.query.done !== undefined) {
+      filter.done = req.query.done === "true";
+    }
+    const tasks = await Task.find(filter);
     res.json(tasks);
   } catch (error) {
     next(error);

@@ -19,6 +19,7 @@ const morgan = require("morgan");
 
 const app = express();
 const taskRoutes = require("./routes/tasks");
+const userRoutes = require("./routes/users");
 
 app.use(express.json());
 app.use(morgan("dev"));
@@ -28,6 +29,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/tasks", taskRoutes);
+app.use("/api/users", userRoutes);
 
 //unknown endpoint handler
 app.use((req, res) => {

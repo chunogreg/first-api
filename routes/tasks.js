@@ -31,11 +31,22 @@ router.get("/:id", async (req, res, next) => {
 
 router.put("/:id", async (req, res, next) => {
   try {
+    const updateData = {};
+
+    if (req.body.title !== undefined) {
+      updateData.title = req.body.title;
+    }
+
+    if (req.body.done !== undefined) {
+      updateData.done = req.body.done;
+    }
+
     const updatedTask = await Task.findByIdAndUpdate(
       req.params.id,
-      { title: req.body.title, done: req.body.done },
-      { returnDocument: "after" },
+      updateData,
+      { returnDocument: "after", runValidators: true, context: "query" },
     );
+
     if (updatedTask) {
       res.json(updatedTask);
     } else {

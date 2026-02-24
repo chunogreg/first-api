@@ -1,10 +1,12 @@
 require("node:dns/promises").setServers(["1.1.1.1", "8.8.8.8"]);
 
-require("dotenv").config();
+const config = require("./utils/config");
+//require("dotenv").config();
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(config.MONGODB_URI)
+  //.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -37,20 +39,24 @@ const unknownEndpiont = (req, res) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err.message);
+  console.error("ERROR:", err.message);
+
+  // console.error(err.message);
   if (err.name === "CastError") {
     return res.status(400).json({ error: "Invalid Id format" });
   }
   if (err.name === "ValidationError") {
     return res.status(400).json({ error: err.message });
   }
-  res.status(500).json({ error: "something went wrong" });
+  res.status(500).json({ error: "Internal server error" });
+  //res.status(500).json({ error: "something went wrong" });
 };
 
 app.use(unknownEndpiont);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3000;
+const PORT = config.PORT;
+//const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

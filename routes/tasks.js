@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
+const { body, validationResult } = require("express-validator");
+//const asyncHandler = require("express-async-handler");
 
-router.get("/", async (req, res, next) => {
+router.get("/", async (req, res) => {
+  //throw new Error("Async crash test");
   try {
     const filter = {};
 
@@ -72,19 +75,45 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
-  try {
+//const { body, validationResult } = require("express-validator");
+
+router.post(
+  "/",
+  [
+    body("title")
+      .isLength({ min: 3, max: 100 })
+      .withMessage("title must be between 3 and 100 characters")
+      .trim()
+      .escape(),
+    body("done")
+      .optional()
+      .isBoolean()
+      .withMessage("done must be true or false")
+      .toBoolean(),
+  ],
+  async (req, res) => {
+    //throw new Error("Test crash");
+
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(404).json({ error: errors.array() });
+    }
+
     const task = new Task({
       title: req.body.title,
-      done: false,
+      done: req.body.done,
     });
+
+    console.log("Incoming done:", req.body.done);
+    console.log("Type of done:", typeof req.body.done);
 
     const savedTask = await task.save();
     res.status(201).json(savedTask);
-  } catch (error) {
-    next(error);
-  }
-});
+    // } catch (error) {
+    //   next(error);
+    // }
+  },
+);
 
 module.exports = router;
 

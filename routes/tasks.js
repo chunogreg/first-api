@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Task = require("../models/task");
 const { body, validationResult } = require("express-validator");
+const authenticateToken = require("../middleware/authMiddleware");
 //const asyncHandler = require("express-async-handler");
 
-router.get("/", async (req, res) => {
+router.get("/", authenticateToken, async (req, res) => {
   //throw new Error("Async crash test");
   try {
     const filter = {};
@@ -19,7 +20,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", authenticateToken, async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id);
     if (task) {
@@ -79,6 +80,8 @@ router.delete("/:id", async (req, res, next) => {
 
 router.post(
   "/",
+  authenticateToken,
+
   [
     body("title")
       .isLength({ min: 3, max: 100 })

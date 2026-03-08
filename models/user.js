@@ -6,8 +6,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Username is require"],
       minLength: [3, "Username must be atleast 3 character long"],
+      unique: true,
     },
     passwordHash: { type: String, required: true },
+    refreshTokens: [{ tokenHash: String, createdAt: Date, expiredAt: Date }],
   },
   { timestamps: true },
 );

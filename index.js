@@ -22,8 +22,9 @@ const morgan = require("morgan");
 
 const app = express();
 const taskRoutes = require("./routes/tasks");
+const authRoutes = require("./routes/authRoutes");
 
-app.use(express.json());
+app.use(express.json({ limit: "1000kb" }));
 
 morgan.token("body", (req) => {
   return JSON.stringify(req.body);
@@ -83,6 +84,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use("/api/tasks", taskRoutes);
+app.use("/api/auth", authRoutes);
 
 //unknown endpoint handler
 app.use((req, res) => {

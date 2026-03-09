@@ -1,0 +1,2 @@
+post http://localhost:3000/api/auth/logout-all
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OWFhN2RlNGVkNGQ2NGY3MzIxMmNlNTUiLCJ1c2VybmFtZSI6InRlc3RAZXhhbXBsZS5jb20iLCJpYXQiOjE3NzMwNjIzOTIsImV4cCI6MTc3MzA2MzI5Mn0.OWoY5OxO4CUrLxAR7hNqPlhE-4RrOtn6M3Rp4s2TRVc

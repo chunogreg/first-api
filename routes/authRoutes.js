@@ -3,20 +3,15 @@ const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const authMiddleware = require("../middleware/authMiddleware");
+const logoutAll = require("../controller/authController");
 
 //const user = require("../models/user");
 
 router.post("/signup", async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    // if (!password || password.length < 6) {
-    //   return res.status(404).json({ error: "password must be atleast " });
-    // }
 
-    // const existingUser = await User.findOne({ username });
-    // if (existingUser) {
-    //   res.status(404).json({ error: "user already exist" });
-    // }
     const saltRound = 12;
     const passwordHash = await bcrypt.hash(password, saltRound);
 
@@ -107,5 +102,7 @@ router.post("/refresh", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/logout-all", authMiddleware, logoutAll);
 
 module.exports = router;

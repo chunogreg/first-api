@@ -19,12 +19,14 @@ const rateLimit = require("express-rate-limit");
 
 const express = require("express");
 const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 const taskRoutes = require("./routes/tasks");
 const authRoutes = require("./routes/authRoutes");
 
 app.use(express.json({ limit: "1000kb" }));
+app.use(cookieParser());
 
 morgan.token("body", (req) => {
   return JSON.stringify(req.body);

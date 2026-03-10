@@ -51,13 +51,13 @@ POST/api/auth/logout-all
 
 ### Tasks
 
-GET/api/tasks
+GET /api/tasks
 
-POST/api/tasks
+POST /api/tasks
 
-PUT/api/tasks
+PUT /api/tasks/:id
 
-DELETE/api/tasks
+DELETE /api/tasks/:id
 
 ---
 

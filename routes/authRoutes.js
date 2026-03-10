@@ -4,7 +4,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const authMiddleware = require("../middleware/authMiddleware");
-const logoutAll = require("../controller/authController");
+const { logout, logoutAll } = require("../controller/authController");
 
 //const user = require("../models/user");
 
@@ -84,6 +84,9 @@ router.post("/refresh", async (req, res, next) => {
         if (match) {
           validUser = user;
           validTokenIndex = i;
+
+          validUser.refreshTokens.splice(validTokenIndex, 1);
+
           break;
         }
       }
@@ -97,6 +100,22 @@ router.post("/refresh", async (req, res, next) => {
       process.env.JWT_ACCESS_SECRET,
       { expiresIn: "15m" },
     );
+    const newRefreshToken = crypto.randomBytes(64).toString("hex");
+    const newRefreshTokenHash = await bcrypt.hash(newRefreshToken, 12);
+    validUser.refreshTokens.push({
+      tokenHash: newRefreshTokenHash,
+      createdAt: new Date(),
+      expiredAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+    });
+    await validUser.save();
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     res.status(200).json({ accessToken });
   } catch (error) {
     next(error);
@@ -104,5 +123,6 @@ router.post("/refresh", async (req, res, next) => {
 });
 
 router.post("/logout-all", authMiddleware, logoutAll);
+router.post("/logout", authMiddleware, logout);
 
 module.exports = router;

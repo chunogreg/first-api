@@ -5,6 +5,24 @@ const { body, validationResult } = require("express-validator");
 const authenticateToken = require("../middleware/authMiddleware");
 //const asyncHandler = require("express-async-handler");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Tasks
+ *   description: Task management endpoints
+ */
+
+/**
+ * @swagger
+ * /api/tasks:
+ *  get:
+ *    summary: Get all tasks
+ *    tags: [Tasks]
+ *    responses:
+ *      200:
+ *        description: List of tasks
+ */
+
 router.get("/", authenticateToken, async (req, res) => {
   //throw new Error("Async crash test");
   try {
@@ -96,25 +114,25 @@ router.post(
   ],
   async (req, res) => {
     //throw new Error("Test crash");
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(404).json({ error: errors.array() });
+      }
 
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(404).json({ error: errors.array() });
+      const task = new Task({
+        title: req.body.title,
+        done: req.body.done,
+      });
+
+      // console.log("Incoming done:", req.body.done);
+      // console.log("Type of done:", typeof req.body.done);
+
+      const savedTask = await task.save();
+      res.status(201).json(savedTask);
+    } catch (error) {
+      next(error);
     }
-
-    const task = new Task({
-      title: req.body.title,
-      done: req.body.done,
-    });
-
-    console.log("Incoming done:", req.body.done);
-    console.log("Type of done:", typeof req.body.done);
-
-    const savedTask = await task.save();
-    res.status(201).json(savedTask);
-    // } catch (error) {
-    //   next(error);
-    // }
   },
 );
 

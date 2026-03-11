@@ -8,6 +8,17 @@ const { logout, logoutAll } = require("../controller/authController");
 
 //const user = require("../models/user");
 
+/**
+ * @swagger
+ * /api/auth/signup:
+ *  post:
+ *    summary: Register a user
+ *    tags: [Authentication]
+ *    responses:
+ *      201:
+ *        description: User created successfully
+ */
+
 router.post("/signup", async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -25,6 +36,30 @@ router.post("/signup", async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * @swagger
+ * /api/auth/login:
+ *  post:
+ *    summary: Login a user
+ *    tags: [Authentication]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              username:
+ *                type: string
+ *              password:
+ *                type: string
+ *    responses:
+ *      200:
+ *        description: Login successful
+ *      401:
+ *        description: Invalid credential
+ */
 
 router.post("/login", async (req, res, next) => {
   try {
@@ -65,6 +100,17 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * @swagger
+ * /api/auth/refresh:
+ *  post:
+ *    summary: Refresh access token
+ *    tags: [Authentication]
+ *    responses:
+ *      200:
+ *        description: New access token issued
+ */
 
 router.post("/refresh", async (req, res, next) => {
   try {
@@ -122,7 +168,30 @@ router.post("/refresh", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/auth/logout-all:
+ *  post:
+ *    summary: Logout from all devices
+ *    tags: [Authentication]
+ *    responses:
+ *      200:
+ *        description: Logged out from all devices
+ */
+
 router.post("/logout-all", authMiddleware, logoutAll);
+
+/**
+ * @swagger
+ * /api/auth/logout:
+ *  post:
+ *    summary: Logout from current device
+ *    tags: [Authentication]
+ *    responses:
+ *      200:
+ *        description: Logged out successfully
+ */
+
 router.post("/logout", authMiddleware, logout);
 
 module.exports = router;

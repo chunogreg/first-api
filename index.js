@@ -25,6 +25,9 @@ const app = express();
 const taskRoutes = require("./routes/tasks");
 const authRoutes = require("./routes/authRoutes");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./swagger");
+
 app.use(express.json({ limit: "1000kb" }));
 app.use(cookieParser());
 
@@ -61,6 +64,8 @@ app.use((err, req, res, next) => {
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 //unknown endpoint handler
 app.use((req, res) => {

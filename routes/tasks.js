@@ -38,6 +38,23 @@ router.get("/", authenticateToken, async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *  get:
+ *    summary: Get a single task
+ *    tags: [Tasks]
+ *    parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        schema:
+ *          type: string
+ *    response:
+ *      200:
+ *        description: Task retreived
+ */
+
 router.get("/:id", authenticateToken, async (req, res, next) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -50,6 +67,17 @@ router.get("/:id", authenticateToken, async (req, res, next) => {
     next(error);
   }
 });
+
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *  put:
+ *    summary: Update a task
+ *    tags: [Tasks]
+ *    response:
+ *      200:
+ *        description: Task updated
+ */
 
 router.put("/:id", async (req, res, next) => {
   try {
@@ -79,6 +107,17 @@ router.put("/:id", async (req, res, next) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/tasks/{id}:
+ *  delete:
+ *    summary: Delete a task
+ *    tags: [Tasks]
+ *    responses:
+ *        200:
+ *          description: Task deleted
+ */
+
 router.delete("/:id", async (req, res, next) => {
   try {
     const result = await Task.findByIdAndDelete(req.params.id);
@@ -96,6 +135,16 @@ router.delete("/:id", async (req, res, next) => {
 
 //const { body, validationResult } = require("express-validator");
 
+/**
+ * @swagger
+ * /api/tasks:
+ *  post:
+ *    summary: Create a new task
+ *    tags: [Tasks]
+ *    response:
+ *      201:
+ *        description: Task created
+ */
 router.post(
   "/",
   authenticateToken,

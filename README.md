@@ -97,3 +97,21 @@ npm run dev
 Server runs on:
 
 http://localhost:3000
+
+## Running with Docker
+
+Build the image:
+
+docker build -t secure-task-api
+
+Run the container
+
+docker run -p 3000:3000 secure-task-api
+
+The API will be available at
+
+http://localhost:3000
+
+Interactive API documentation
+
+http://localhost:3000/api-doc

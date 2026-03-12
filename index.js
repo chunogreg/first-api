@@ -67,6 +67,14 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.get("/", (req, res) => {
+  res.json({
+    service: "Secure Task API",
+    status: "Running",
+    documentation: "/api-docs",
+  });
+});
+
 //unknown endpoint handler
 app.use((req, res) => {
   res.status(404).json({ error: "unknown endpoint" });

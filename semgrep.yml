@@ -1,0 +1,12 @@
+rules:
+  - id: javascript-eval
+    pattern: eval(...)
+    message: Avoid using eval() due to security risk
+    languages: [javascript]
+    severity: ERROR
+
+  - id: hardcoded-secret
+    pattern: password = "..."
+    message: Possible hardcoded secret
+    languages: [javascript]
+    severity: WARNING

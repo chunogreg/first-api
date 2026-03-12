@@ -27,11 +27,14 @@ This project demonstrates production-style authentication and security practices
 - Express
 - MongoDB (Mongoose)
 - JSON Web Token (JWT)
-- bcrypt
+- bcrypt (password hashing)
+- Node.js crypto (refresh token hashing)
 - cookie-parser
 - helmet
 - express-rate-limit
 - morgan
+- swagger (swagger-jsdoc + swagger UI)
+- Docker
 
 ---
 

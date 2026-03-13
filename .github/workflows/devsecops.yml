@@ -21,7 +21,7 @@ jobs:
       - name: Install Semgrep
         run: pip install semgrep
 
-      - name: Run Semgrep scan
+      - name: Run Semgrep
         run: semgrep ci || true
 
   docker-build:

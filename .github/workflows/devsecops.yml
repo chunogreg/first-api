@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Semgrep scan
+      - name: Run Semgrep
         uses: returntocorp/semgrep-action@v1
         with:
           config: auto
@@ -36,9 +36,6 @@ jobs:
     needs: docker-build
 
     steps:
-      - name: Checkout repository
-        uses: action/checkout@v4
-
       - name: Scan Docker image
         uses: aquasecurity/trivy-action@master
         with:

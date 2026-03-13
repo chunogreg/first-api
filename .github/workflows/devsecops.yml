@@ -16,7 +16,7 @@ jobs:
       - name: Run Semgrep scan
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/javascript"
+          config: p/javascript
         continue-on-error: true
 
   docker-build:

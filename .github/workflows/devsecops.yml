@@ -13,10 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Semgrep
+      - name: Run Semgrep scan
         uses: returntocorp/semgrep-action@v1
         with:
-          config: "p/owasp-top-ten"
+          config: "p/javascript"
         continue-on-error: true
 
   docker-build:

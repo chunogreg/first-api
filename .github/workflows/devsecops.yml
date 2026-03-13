@@ -13,16 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
-      - name: Install Semgrep
-        run: pip install semgrep
-
       - name: Run Semgrep
-        run: semgrep ci || true
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: p/javascript
+        continue-on-error: true
 
   docker-build:
     name: Build Docker Image

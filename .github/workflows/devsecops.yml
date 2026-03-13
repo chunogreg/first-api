@@ -19,8 +19,8 @@ jobs:
           config: p/javascript
         continue-on-error: true
 
-  docker-build:
-    name: Build Docker Image
+  docker-build-and-trivy:
+    name: Build Docker & Scan
     runs-on: ubuntu-latest
     needs: semgrep
 
@@ -31,13 +31,7 @@ jobs:
       - name: Build Docker image
         run: docker build -t secure-task-api .
 
-  trivy-scan:
-    name: Container Scan with Trivy
-    runs-on: ubuntu-latest
-    needs: docker-build
-
-    steps:
-      - name: Scan Docker image
+      - name: Scan Docker image with Trivy
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: secure-task-api

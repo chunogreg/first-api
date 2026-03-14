@@ -6,18 +6,29 @@ This project demonstrates production-style authentication and security practices
 
 ---
 
-## Features
+## Security Features
 
-- JWT Authentication
-- Refresh Token Rotation
-- Refresh Token Reuse Detection
-- Logout (single device)
-- Logout from All Devices
-- Password Hashing with bcrypt
-- Rate Limiting to prevent brute-force attacks
-- Helmet security headers
-- Suspicious request logging
-- Secure HTTP-only cookies
+- **Advanced Authentication**: Full **JWT-based** system with **Refresh Token Rotation**
+- **Reuse Detection:** Automatic invalidation of token families upon **Refresh Token Reuse Detection**
+- **Session Management:** Secure Logout **(single device)** or a **Global Logout** from all active Devices
+- **Data Protection:** Industry-standard **Password Hashing with bcrypt**
+- **Threat Mitigation:** Integrated **Rate Limiting** and **suspicious Request Logging** to identify and block brute-force attempts.
+- **Secure Transport:** Hardened Secure **HTTP-only cookies** and **Helmet security headers**
+
+---
+
+## Other Feature
+
+- **API Documentation**: Interactive **Swagger/OpenAPI** UI for live endpoint testing.
+
+---
+
+## Infrastructure & DevSecOps
+
+- **Docker containerization**
+- **CI/CD pipeline** using **GitHub Actions**
+- Static application security testing with **Semgrep**
+- **Container vulnerability** scanning using **Trivy**
 
 ---
 
@@ -74,6 +85,28 @@ This API implements multiple security layers:
 - Reuse detection revokes all sessions if token theft is detected.
 - Helmet adds HTTP security headers.
 - Rate limiting prevents brute-force login attempts.
+
+---
+
+## Pipeline Diagram
+
+Developer push
+
+&darr;
+
+Github Actions
+
+&darr;
+
+SAST (Semgrep)
+
+&darr;
+
+Docker Build
+
+&darr;
+
+Container Scan (Trivy)
 
 ---
 

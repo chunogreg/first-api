@@ -63,6 +63,8 @@ POST/api/auth/logout
 
 POST/api/auth/logout-all
 
+---
+
 ### Tasks
 
 GET /api/tasks
@@ -114,40 +116,39 @@ Container Scan (Trivy)
 
 Clone the repository:
 
-git clone
+    git clone
 
 install dependencies:
 
-npm install
+    npm install
 
 create a .env file with
 
-MONGODB_URI=yourmongodb_connection
-
-JWT_ACCESS_SECRET=your_secret_key
+    MONGODB_URI=yourmongodb_connection
+    JWT_ACCESS_SECRET=your_secret_key
 
 Start the server:
 
-npm run dev
+    npm run dev
 
 Server runs on:
 
-http://localhost:3000
+    http://localhost:3000
 
 ## Running with Docker
 
 Build the image:
 
-docker build -t secure-task-api
+    docker build -t secure-task-api
 
 Run the container
 
-docker run -p 3000:3000 secure-task-api
+    docker run -p 3000:3000 secure-task-api
 
 The API will be available at
 
-http://localhost:3000
+    http://localhost:3000
 
 Interactive API documentation
 
-http://localhost:3000/api-doc
+    http://localhost:3000/api-doc
